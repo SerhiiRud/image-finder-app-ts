@@ -61,7 +61,7 @@ export class App extends Component {
     }
   }
 
-  searchHandler = (inputValue) => {
+  searchHandler = (inputValue: string) => {
     this.setState({ searchTerm: inputValue, images: [], page: 1 }); //added images, page
   };
 
@@ -84,7 +84,7 @@ export class App extends Component {
         {error && <div>{error}</div>}
         <ImageGallery images={images} />
         {images.length > 0 && status !== "pending" && page <= totalPages && (
-          <Button onClick={this.onLoadMore}>Load More</Button>
+          <Button onClick={this.onLoadMore} />
         )}
       </AppContainer>
     );
