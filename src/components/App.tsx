@@ -6,6 +6,20 @@ import { getImages } from "../services/API";
 import { Loader } from "./Loader/Loader";
 import { Button } from "./Button/Button";
 
+type TProps = {
+  children: React.ReactNode;
+};
+
+type TState = {
+  searchTerm: string;
+  images: string[];
+  status: string;
+  isLoading: boolean;
+  page: number;
+  totalPages: number;
+  error: null | Error;
+};
+
 const Status = {
   IDLE: "idle",
   PENDING: "pending",
@@ -15,7 +29,7 @@ const Status = {
 
 const ERROR_MSG = "Error happend";
 
-export class App extends Component {
+export class App extends Component<TProps, TState> {
   state = {
     searchTerm: "",
     images: [],
@@ -26,7 +40,7 @@ export class App extends Component {
     error: null,
   };
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps: TProps, prevState: TState) {
     if (
       prevState.searchTerm !== this.state.searchTerm ||
       prevState.page !== this.state.page
@@ -38,7 +52,7 @@ export class App extends Component {
         });
 
         const result = await getImages(this.state.searchTerm, this.state.page);
-        if (result.data.totalHits === 0) {
+        if (result?.data.totalHits === 0) {
           return this.setState({
             images: [],
             status: Status.REJECTED,
@@ -54,7 +68,9 @@ export class App extends Component {
           totalPages: Math.floor(result.data.totalHits / 12),
         });
       } catch (error) {
-        this.setState({ error: ERROR_MSG });
+        if (error instanceof Error) {
+          this.setState({ error: Error });
+        }
       } finally {
         this.setState({ isLoading: false });
       }
