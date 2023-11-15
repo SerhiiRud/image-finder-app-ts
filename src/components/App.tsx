@@ -1,10 +1,12 @@
 import { Component } from "react";
+import { AxiosResponse } from "axios";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { AppContainer } from "./App.styled";
 import { getImages } from "../services/API";
 import { Loader } from "./Loader/Loader";
 import { Button } from "./Button/Button";
+import { TImage } from "../types/image";
 
 type TProps = {
   children: React.ReactNode;
@@ -12,12 +14,12 @@ type TProps = {
 
 type TState = {
   searchTerm: string;
-  images: string[];
+  images: TImage[];
   status: string;
   isLoading: boolean;
   page: number;
   totalPages: number;
-  error: null | Error;
+  error: null | string;
 };
 
 const Status = {
@@ -51,7 +53,10 @@ export class App extends Component<TProps, TState> {
           isLoading: true,
         });
 
-        const result = await getImages(this.state.searchTerm, this.state.page);
+        const result: AxiosResponse<any, any> | undefined = await getImages(
+          this.state.searchTerm,
+          this.state.page
+        );
         if (result?.data.totalHits === 0) {
           return this.setState({
             images: [],
@@ -59,17 +64,19 @@ export class App extends Component<TProps, TState> {
           });
         }
 
-        this.setState({
-          images:
-            prevState.searchTerm === this.state.searchTerm
-              ? [...prevState.images, ...result.data.hits]
-              : [...result.data.hits],
-          status: Status.RESOLVED,
-          totalPages: Math.floor(result.data.totalHits / 12),
-        });
+        if (result) {
+          this.setState({
+            images:
+              prevState.searchTerm === this.state.searchTerm
+                ? [...prevState.images, ...result.data.hits]
+                : [...result.data.hits],
+            status: Status.RESOLVED,
+            totalPages: Math.floor(result.data.totalHits / 12),
+          });
+        }
       } catch (error) {
         if (error instanceof Error) {
-          this.setState({ error: Error });
+          this.setState({ error: ERROR_MSG });
         }
       } finally {
         this.setState({ isLoading: false });
@@ -86,7 +93,16 @@ export class App extends Component<TProps, TState> {
   };
 
   render() {
-    const { images, status, isLoading, error, page, totalPages } = this.state;
+    const { images, status, isLoading, page, totalPages, error } =
+      // : {
+      // images: TImage[];
+      // status: string;
+      // isLoading: boolean;
+      // page: number;
+      // totalPages: number;
+      // error: null | string;
+      // }
+      this.state;
     return (
       <AppContainer>
         <Searchbar onSubmit={this.searchHandler} />

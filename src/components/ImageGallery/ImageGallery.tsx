@@ -1,8 +1,8 @@
-import PropTypes from "prop-types";
 import { ImageGalleryItem } from "../ImageGalleryItem/ImageGalleryItem";
 import { GalleryContainer } from "./ImageGallery.styled";
+import { TImage } from "../../types/image";
 
-export const ImageGallery = ({ images }) => {
+export const ImageGallery = ({ images }: { images: TImage[] }) => {
   return (
     <GalleryContainer>
       {images.map((image) => (
@@ -10,8 +10,4 @@ export const ImageGallery = ({ images }) => {
       ))}
     </GalleryContainer>
   );
-};
-
-ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.shape),
 };
