@@ -9,7 +9,7 @@ export type TImage = {
   webformatURL: string;
   webformatWidth: number;
   webformatHeight: number;
-  largeImageUR: string;
+  largeImageURL: string;
   imageWidth: number;
   imageHeight: number;
   imageSize: number;

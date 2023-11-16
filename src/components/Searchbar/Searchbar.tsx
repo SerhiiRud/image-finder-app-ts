@@ -1,19 +1,23 @@
+import { FC } from "react";
 import {
   SearchContainer,
   SearchForm,
   SearchButton,
   SearchInput,
   ButtonLabel,
-} from './Searchbar.styled';
-import PropTypes from 'prop-types';
+} from "./Searchbar.styled";
 
-export const Searchbar = ({ onSubmit }) => {
+type SearchBarType = {
+  onSubmit: (inputValue: string) => void;
+};
+
+export const Searchbar: FC<SearchBarType> = ({ onSubmit }) => {
   return (
     <SearchContainer>
       <SearchForm
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
-          onSubmit(e.currentTarget.elements[1].value);
+          onSubmit((e.currentTarget.elements[1] as HTMLInputElement).value);
           e.currentTarget.reset();
         }}
       >
@@ -29,8 +33,4 @@ export const Searchbar = ({ onSubmit }) => {
       </SearchForm>
     </SearchContainer>
   );
-};
-
-Searchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };

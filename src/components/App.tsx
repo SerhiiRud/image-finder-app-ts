@@ -93,16 +93,7 @@ export class App extends Component<TProps, TState> {
   };
 
   render() {
-    const { images, status, isLoading, page, totalPages, error } =
-      // : {
-      // images: TImage[];
-      // status: string;
-      // isLoading: boolean;
-      // page: number;
-      // totalPages: number;
-      // error: null | string;
-      // }
-      this.state;
+    const { images, status, isLoading, page, totalPages, error } = this.state;
     return (
       <AppContainer>
         <Searchbar onSubmit={this.searchHandler} />

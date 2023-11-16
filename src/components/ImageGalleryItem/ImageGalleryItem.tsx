@@ -1,23 +1,24 @@
 import { Component } from "react";
-import PropTypes from "prop-types";
+import { TImage } from "../../types/image";
 import { GalleryItem, GalleryItemImage } from "./ImageGalleryItem.styled";
 import { Modal } from "../Modal/Modal";
 
-export class ImageGalleryItem extends Component {
-  static propTypes = {
-    imageData: PropTypes.shape({
-      tags: PropTypes.string.isRequired,
-      webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
-    }),
-  };
+type TProps = {
+  imageData: TImage;
+};
 
+type TState = {
+  isModalShown: boolean;
+  imageData: { largeImageURL: string; tags: string };
+};
+
+export class ImageGalleryItem extends Component<TProps, TState> {
   state = {
     isModalShown: false,
-    imageData: { img: "", tags: "" },
+    imageData: { largeImageURL: "", tags: "" },
   };
 
-  onModalShow = (imageData) => {
+  onModalShow = (imageData: { largeImageURL: string; tags: string }) => {
     this.setState({ imageData, isModalShown: true });
   };
 
@@ -50,7 +51,3 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
-
-GalleryItemImage.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
