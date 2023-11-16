@@ -1,5 +1,5 @@
 import { TImage } from "../../types/image";
-import { Component } from "react";
+import { Component, MouseEventHandler } from "react";
 import { createPortal } from "react-dom";
 import { Overlay, ModalWindow } from "./Modal.styled";
 
@@ -9,7 +9,7 @@ type TProps = {
   modalInfo: boolean;
 };
 
-const modalRoot = document.getElementById("modal-root") as HTMLElement;
+const modalRoot = document.getElementById("modal-root")!;
 
 export class Modal extends Component<TProps> {
   componentDidMount() {
@@ -20,7 +20,9 @@ export class Modal extends Component<TProps> {
     window.removeEventListener("keydown", this.onKeyDown);
   }
 
-  onBackdropClick = (e: MouseEvent) => {
+  onBackdropClick: MouseEventHandler<HTMLDivElement> = (
+    e: React.MouseEvent
+  ) => {
     if (e.target === e.currentTarget) {
       this.props.onModalClose();
     }
@@ -35,7 +37,7 @@ export class Modal extends Component<TProps> {
   render() {
     const { largeImageURL, tags } = this.props.modalData;
     return createPortal(
-      <Overlay onClick={() => this.onBackdropClick}>
+      <Overlay onClick={this.onBackdropClick}>
         <ModalWindow>
           <img src={largeImageURL} alt={tags} />
         </ModalWindow>
