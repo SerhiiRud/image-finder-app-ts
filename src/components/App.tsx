@@ -8,9 +8,7 @@ import { Loader } from "./Loader/Loader";
 import { Button } from "./Button/Button";
 import { TImage } from "../types/image";
 
-type TProps = {
-  children: React.ReactNode;
-};
+type TProps = {};
 
 type TState = {
   searchTerm: string;
